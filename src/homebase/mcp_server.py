@@ -10,9 +10,13 @@ from starlette.applications import Starlette
 from homebase.login import LoginPage, LoginThrottle
 from homebase.oauth import HomebaseOAuthProvider
 from homebase.settings import Settings
+from homebase.task_tools import register_task_tools
+from homebase.tasks import TaskStore
 
 
-def build_mcp_app(settings: Settings, provider: HomebaseOAuthProvider) -> Starlette:
+def build_mcp_app(
+    settings: Settings, provider: HomebaseOAuthProvider, task_store: TaskStore
+) -> Starlette:
     server = MCPServer(
         "homebase",
         auth_server_provider=provider,
@@ -30,6 +34,8 @@ def build_mcp_app(settings: Settings, provider: HomebaseOAuthProvider) -> Starle
     def ping() -> str:
         """Check that the homebase server is reachable and you are signed in."""
         return "pong"
+
+    register_task_tools(server, task_store)
 
     login_page = LoginPage(provider, settings, LoginThrottle())
     server.custom_route("/login", methods=["GET", "POST"])(login_page.handle)
