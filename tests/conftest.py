@@ -59,7 +59,8 @@ def empty_database(database_url: str) -> None:
     with engine.begin() as connection:
         connection.execute(
             sa.text(
-                "truncate tasks, oauth_tokens, oauth_clients restart identity cascade"
+                "truncate tasks, profile_entries, oauth_tokens, oauth_clients "
+                "restart identity cascade"
             )
         )
     engine.dispose()

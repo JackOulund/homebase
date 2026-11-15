@@ -27,6 +27,20 @@ Put the printed line in `/opt/homebase/.env` and redeploy. Clients may only
 register Claude's callback (`https://claude.ai/api/mcp/auth_callback`) or a
 loopback address.
 
+## Tools
+
+- `ping`: check that the server is reachable and you are signed in.
+- `add_task`: add a chore or one-off job, optionally with estimate, interval, room and notes.
+- `list_tasks`: list all open tasks.
+- `complete_task`: mark a task done, optionally with the actual minutes it took.
+- `update_task`: change a task's name, estimate, interval, room or notes.
+- `remove_task`: remove a task that no longer applies.
+- `suggest_tasks`: suggest up to three due tasks that fit in the minutes available.
+- `get_time_history`: average actual minutes per task, to improve estimates.
+- `get_profile`: read the lasting facts about the home.
+- `set_profile_entry`: save or update a fact about the home.
+- `remove_profile_entry`: remove a fact from the home profile.
+
 ## Deploy
 
 Merging to `main` runs the tests, pushes an image to GHCR and deploys it to the

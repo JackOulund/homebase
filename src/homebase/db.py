@@ -52,3 +52,36 @@ tasks = sa.Table(
     sa.CheckConstraint("estimated_minutes > 0", name="estimated_minutes_positive"),
     sa.CheckConstraint("interval_days > 0", name="interval_days_positive"),
 )
+
+task_completions = sa.Table(
+    "task_completions",
+    metadata,
+    sa.Column("id", sa.Integer, sa.Identity(), primary_key=True),
+    sa.Column(
+        "task_id",
+        sa.Integer,
+        sa.ForeignKey("tasks.id", ondelete="CASCADE"),
+        nullable=False,
+    ),
+    sa.Column(
+        "completed_at",
+        sa.DateTime(timezone=True),
+        nullable=False,
+        server_default=sa.func.now(),
+    ),
+    sa.Column("actual_minutes", sa.Integer),
+    sa.CheckConstraint("actual_minutes > 0", name="actual_minutes_positive"),
+)
+
+profile_entries = sa.Table(
+    "profile_entries",
+    metadata,
+    sa.Column("key", sa.Text, primary_key=True),
+    sa.Column("value", sa.Text, nullable=False),
+    sa.Column(
+        "updated_at",
+        sa.DateTime(timezone=True),
+        nullable=False,
+        server_default=sa.func.now(),
+    ),
+)

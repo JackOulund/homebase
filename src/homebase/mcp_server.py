@@ -9,13 +9,18 @@ from starlette.applications import Starlette
 
 from homebase.login import LoginPage, LoginThrottle
 from homebase.oauth import HomebaseOAuthProvider
+from homebase.profile import ProfileStore
+from homebase.profile_tools import register_profile_tools
 from homebase.settings import Settings
 from homebase.task_tools import register_task_tools
 from homebase.tasks import TaskStore
 
 
 def build_mcp_app(
-    settings: Settings, provider: HomebaseOAuthProvider, task_store: TaskStore
+    settings: Settings,
+    provider: HomebaseOAuthProvider,
+    task_store: TaskStore,
+    profile_store: ProfileStore,
 ) -> Starlette:
     server = MCPServer(
         "homebase",
@@ -36,6 +41,7 @@ def build_mcp_app(
         return "pong"
 
     register_task_tools(server, task_store)
+    register_profile_tools(server, profile_store)
 
     login_page = LoginPage(provider, settings, LoginThrottle())
     server.custom_route("/login", methods=["GET", "POST"])(login_page.handle)
