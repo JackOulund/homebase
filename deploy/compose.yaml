@@ -5,7 +5,9 @@ services:
     image: ${IMAGE:?set by the deploy workflow}
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql://homebase:${POSTGRES_PASSWORD:?set in .env}@db:5432/homebase
+      DATABASE_URL: postgresql+psycopg://homebase:${POSTGRES_PASSWORD:?set in .env}@db:5432/homebase
+      PUBLIC_URL: https://${SITE_ADDRESS:?set in .env}
+      LOGIN_PASSWORD_HASH: ${LOGIN_PASSWORD_HASH:-}
     depends_on:
       db:
         condition: service_healthy
@@ -32,7 +34,7 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      SITE_ADDRESS: ${SITE_ADDRESS:-:80}
+      SITE_ADDRESS: ${SITE_ADDRESS:?set in .env}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

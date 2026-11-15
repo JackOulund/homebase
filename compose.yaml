@@ -4,7 +4,9 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgresql://homebase:homebase@db:5432/homebase
+      DATABASE_URL: postgresql+psycopg://homebase:homebase@db:5432/homebase
+      PUBLIC_URL: http://localhost:8000
+      LOGIN_PASSWORD_HASH: ${LOGIN_PASSWORD_HASH:-}
     depends_on:
       db:
         condition: service_healthy
@@ -15,6 +17,8 @@ services:
       POSTGRES_USER: homebase
       POSTGRES_PASSWORD: homebase
       POSTGRES_DB: homebase
+    ports:
+      - "127.0.0.1:54329:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:

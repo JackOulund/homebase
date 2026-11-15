@@ -6,11 +6,26 @@ Home chore and task backend: FastAPI + Postgres, with an MCP interface to come.
 
 ```bash
 uv sync
+docker compose up -d --wait db
 uv run pytest
 docker compose up --build
 ```
 
-The app answers on http://localhost:8000/health.
+The tests need the local Postgres and create their own `homebase_test` database.
+The app answers on http://localhost:8000/health and serves MCP on `/mcp`.
+
+## Sign-in
+
+The MCP endpoint is protected by OAuth with a single password. Only its scrypt
+hash is stored, in `LOGIN_PASSWORD_HASH`. Generate one on the server with:
+
+```bash
+docker exec -it homebase-app-1 python -m homebase.password
+```
+
+Put the printed line in `/opt/homebase/.env` and redeploy. Clients may only
+register Claude's callback (`https://claude.ai/api/mcp/auth_callback`) or a
+loopback address.
 
 ## Deploy
 

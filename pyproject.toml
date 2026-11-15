@@ -5,7 +5,11 @@ description = "Home chore and task backend with an MCP interface"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "alembic>=1.20.1",
     "fastapi>=0.163.1",
+    "mcp>=2.3.0",
+    "psycopg[binary]>=3.3.9",
+    "sqlalchemy[asyncio]>=2.1.8",
     "uvicorn[standard]>=0.54.0",
 ]
 
